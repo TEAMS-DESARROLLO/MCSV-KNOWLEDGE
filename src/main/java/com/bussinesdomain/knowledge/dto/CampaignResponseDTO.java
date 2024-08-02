@@ -29,7 +29,6 @@ public class CampaignResponseDTO {
 	
     private Date dateEnd;
 	
-    private LocalDateTime createdAt;
     
     private Long idCommunity;
 }

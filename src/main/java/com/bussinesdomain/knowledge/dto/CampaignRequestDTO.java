@@ -35,8 +35,6 @@ public class CampaignRequestDTO {
 	
     @NotNull(message = ValidationMessage.CAN_T_BE_NULL)
     private Date dateEnd;
-	
-    private LocalDateTime createdAt;
     
     @NotNull(message = ValidationMessage.CAN_T_BE_NULL)
     private Long idCommunity;

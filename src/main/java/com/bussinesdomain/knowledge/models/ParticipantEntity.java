@@ -1,11 +1,25 @@
 package com.bussinesdomain.knowledge.models;
 
-import jakarta.persistence.*;
+import java.io.Serializable;
+import java.time.LocalDateTime;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.io.Serializable;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "participant")
@@ -17,8 +31,8 @@ public class ParticipantEntity implements Serializable {
 	private static final long serialVersionUID = -5786663920489165356L;
 
 	@Id
-    @GeneratedValue(generator = "seqParticipant", strategy = GenerationType.IDENTITY)
-    @SequenceGenerator(name = "seqParticipant", sequenceName = "participant_seq", allocationSize = 1)
+    @SequenceGenerator(name = "seqParticipant", sequenceName = "seqParticipant", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "seqParticipant")
     @Column(name = "id_participant")
     private Long idParticipant;
 

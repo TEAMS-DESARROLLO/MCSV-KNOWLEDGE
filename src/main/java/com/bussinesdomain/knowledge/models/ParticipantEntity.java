@@ -44,9 +44,8 @@ public class ParticipantEntity implements Serializable {
     @JoinColumn(name="id_campaign",referencedColumnName="id_campaign")
     private CampaignEntity campaign;
     
-    @ManyToOne(optional = true,fetch= FetchType.EAGER)
-    @JoinColumn(name="id_collaborator",referencedColumnName="id_collaborator")
-    private CollaboratorEntity collaborator;
+    @Column(name="id_collaborator")
+    private Long collaborator;
 
     @PrePersist
     public void prePersisten(){

@@ -9,17 +9,19 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "collaborator")
+@Table(name = "collaborator_campaign")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class CollaboratorEntity implements Serializable{
+public class CollaboratorCampaignEntity implements Serializable{
 
 	private static final long serialVersionUID = 3993188445268768079L;
 
-	@Id
-    @Column(name="id_collaborator")
-    private Long idCollaborator;
+    @Id
+    @GeneratedValue(generator = "seqCollaboratorCampaign", strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name = "seqCollaboratorCampaign", sequenceName = "collaborator_campaign_seq", allocationSize = 1)
+    @Column(name = "id_collaborator_campaign")
+    private Long idCollaboratorCampaign;
 
     @Column(name="id_community",nullable = false)
     private Long idCommunity;
@@ -27,14 +29,12 @@ public class CollaboratorEntity implements Serializable{
     @Column(name="id_subpractica",nullable = false)
     private Long idSubpractica;
     
-    @Column(name="id_technology",nullable = false)
-    private Long idTechnology;
     
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name="created_at",nullable = true)
     private LocalDateTime createdAt;
     
-    @ManyToOne(optional = true,fetch= FetchType.EAGER)
+    @ManyToOne(optional = false,fetch= FetchType.EAGER)
     @JoinColumn(name="id_participant",referencedColumnName="id_participant")
     private ParticipantEntity participant;
 

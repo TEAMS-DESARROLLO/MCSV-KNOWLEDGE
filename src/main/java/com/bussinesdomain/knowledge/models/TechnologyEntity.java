@@ -17,8 +17,15 @@ public class TechnologyEntity implements Serializable{
 	private static final long serialVersionUID = 798618670059069385L;
 
 	@Id
+    @GeneratedValue(generator = "seqTechnology", strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name = "seqCollaboratorCampaign", sequenceName = "technology_seq", allocationSize = 1)
     @Column(name="id_technology")
     private Long idTechnology;
+
+    
+    @ManyToOne(optional = false,fetch= FetchType.EAGER)
+    @JoinColumn(name="id_collaborator_campaign",referencedColumnName="id_collaborator_campaign")
+    private CollaboratorCampaignEntity collaboratorCampaign;
 
     @Column(name="id_catalog",nullable = false)
     private Long idCatalog;
@@ -27,6 +34,6 @@ public class TechnologyEntity implements Serializable{
     private Double yearExpert;
     
     @Column(name="rank",nullable = false)
-    private Double rank;
+    private Long rank;
    
 }

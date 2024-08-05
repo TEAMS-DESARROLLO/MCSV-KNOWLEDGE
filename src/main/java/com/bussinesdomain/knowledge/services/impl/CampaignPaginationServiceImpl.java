@@ -60,10 +60,10 @@ public class CampaignPaginationServiceImpl implements IPaginationCommons<Campaig
 	public StringBuilder getSelect() {
 		StringBuilder sql = new StringBuilder("SELECT new com.bussinesdomain.maestros.dto.CampaignResponseDTO("+
         "r.idCampaign,"+
-        "r.name"+
-        "r.description"+
-        "r.dateStart"+
-        "r.dateEnd"+
+        "r.name,"+
+        "r.description,"+
+        "r.dateStart,"+
+        "r.dateEnd,"+
         "r.idCommunity"+
         ") ");
         return sql;

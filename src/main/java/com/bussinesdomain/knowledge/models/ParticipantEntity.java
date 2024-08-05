@@ -45,7 +45,7 @@ public class ParticipantEntity implements Serializable {
     private CampaignEntity campaign;
     
     @Column(name="id_collaborator")
-    private Long collaborator;
+    private Long idCollaborator;
 
     @PrePersist
     public void prePersisten(){

@@ -1,11 +1,21 @@
 package com.bussinesdomain.knowledge.models;
 
-import jakarta.persistence.*;
+import java.time.LocalDateTime;
+import java.util.Date;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 @Table(name = "campaign")
@@ -13,10 +23,10 @@ import java.util.Date;
 @NoArgsConstructor
 @Data
 public class CampaignEntity {
-
+ 
     @Id
-    @GeneratedValue(generator = "seqCampaign", strategy = GenerationType.IDENTITY)
-    @SequenceGenerator(name = "seqCampaign", sequenceName = "campaign_seq", allocationSize = 1)
+    @SequenceGenerator(name = "seqCampaign", sequenceName = "seqCampaign", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "seqCampaign")
     @Column(name = "id_campaign")
     private Long idCampaign;
 

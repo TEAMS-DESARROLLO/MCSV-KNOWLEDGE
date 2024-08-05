@@ -3,7 +3,20 @@ package com.bussinesdomain.knowledge.models;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import jakarta.persistence.*;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,8 +31,8 @@ public class CollaboratorCampaignEntity implements Serializable{
 	private static final long serialVersionUID = 3993188445268768079L;
 
     @Id
-    @GeneratedValue(generator = "seqCollaboratorCampaign", strategy = GenerationType.IDENTITY)
-    @SequenceGenerator(name = "seqCollaboratorCampaign", sequenceName = "collaborator_campaign_seq", allocationSize = 1)
+    @SequenceGenerator(name = "seqCollaboratorCampaign", sequenceName = "seqCollaboratorCampaign", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "seqCollaboratorCampaign")
     @Column(name = "id_collaborator_campaign")
     private Long idCollaboratorCampaign;
 

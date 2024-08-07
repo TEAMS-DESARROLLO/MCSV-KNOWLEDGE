@@ -2,17 +2,24 @@ package com.bussinesdomain.knowledge.services.impl;
 
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import com.bussinesdomain.knowledge.client.master.MasterClient;
+import com.bussinesdomain.knowledge.client.master.dto.CollaboratorResponseDTO;
+import com.bussinesdomain.knowledge.client.master.dto.CommunityResponseDTO;
 import com.bussinesdomain.knowledge.commons.Filter;
 import com.bussinesdomain.knowledge.commons.IPaginationCommons;
 import com.bussinesdomain.knowledge.commons.PaginationModel;
 import com.bussinesdomain.knowledge.commons.SortModel;
+import com.bussinesdomain.knowledge.config.ConfigToken;
 import com.bussinesdomain.knowledge.dto.CampaignResponseDTO;
+import com.bussinesdomain.knowledge.dto.ParticipantResponseDTO;
 import com.bussinesdomain.knowledge.exception.ServiceException;
 
 import jakarta.persistence.EntityManager;
@@ -24,6 +31,7 @@ import lombok.RequiredArgsConstructor;
 public class CampaignPaginationServiceImpl implements IPaginationCommons<CampaignResponseDTO>{
 
     private final EntityManager entityManager;
+    private final MasterClient masterClient;
 	
 	@Override
 	public Page<CampaignResponseDTO> pagination(PaginationModel pagination) {
@@ -45,7 +53,7 @@ public class CampaignPaginationServiceImpl implements IPaginationCommons<Campaig
 
 			@SuppressWarnings("unchecked")
 			List<CampaignResponseDTO> lista = querySelect.getResultList();
-
+            assignCommunityInList(lista);
 			PageRequest pageable = PageRequest.of(pagination.getPageNumber(), pagination.getRowsPerPage());
 
 			Page<CampaignResponseDTO> page = new PageImpl<CampaignResponseDTO>(lista, pageable, total);
@@ -56,16 +64,29 @@ public class CampaignPaginationServiceImpl implements IPaginationCommons<Campaig
 		}
 	}
 
+    private void assignCommunityInList(List<CampaignResponseDTO> lista){
+		List<Long> idCommunitiesLst = lista.stream().map(x -> x.getIdCommunity()).distinct().collect(Collectors.toList());
+		List<CommunityResponseDTO> communities = this.masterClient.findCommunitiesByListId(ConfigToken.tokenBack, idCommunitiesLst).getBody();
+		lista.forEach(x ->
+		{
+			@SuppressWarnings("null")
+			Optional<CommunityResponseDTO> optCollaborator = communities.stream().filter(y->y.getIdCommunity().equals(x.getIdCommunity())).findAny();
+			if(optCollaborator.isPresent()){
+				x.setCommunityDescription(optCollaborator.get().getDescription());
+			}
+		});
+	}
+
 	@Override
 	public StringBuilder getSelect() {
-		StringBuilder sql = new StringBuilder("SELECT new com.bussinesdomain.maestros.dto.CampaignResponseDTO("+
+		StringBuilder sql = new StringBuilder("SELECT new com.bussinesdomain.knowledge.dto.CampaignResponseDTO("+
         "r.idCampaign,"+
         "r.name,"+
         "r.description,"+
         "r.dateStart,"+
         "r.dateEnd,"+
-        "r.idCommunity"+
-        ") ");
+        "r.idCommunity,"+
+        "\"\") ");
         return sql;
 	}
 

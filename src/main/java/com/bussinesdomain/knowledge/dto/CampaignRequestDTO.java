@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Date;
 
 import com.bussinesdomain.knowledge.constants.ValidationMessage;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -30,9 +31,11 @@ public class CampaignRequestDTO {
     @NotBlank(message = ValidationMessage.NOWHITESPACES_STRING)
     private String description;
 	
+	@JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     @NotNull(message = ValidationMessage.CAN_T_BE_NULL)
     private Date dateStart;
 	
+	@JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     @NotNull(message = ValidationMessage.CAN_T_BE_NULL)
     private Date dateEnd;
     

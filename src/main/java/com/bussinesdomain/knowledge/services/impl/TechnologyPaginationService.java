@@ -60,18 +60,18 @@ public class TechnologyPaginationService implements IPaginationCommons<Technolog
     public StringBuilder getSelect() {
         StringBuilder sql = new StringBuilder(
                 "SELECT new com.bussinesdomain.knowledge.dto.TechnologyResponseDTO"+
-                        "(a.idTechnology,a.idCollaboratorCampaign,a.idCatalog,a.yearExpert," +
+                        "(a.idTechnology,c.idCollaboratorCampaign,a.idCatalog,a.yearExpert," +
                         "a.rank) ");
         return sql;
 
     }
 
     @Override
-    public StringBuilder getFrom() {
-        StringBuilder sql = new StringBuilder(" FROM TechnologyEntity a ");
+	public StringBuilder getFrom() {
+		StringBuilder sql = new StringBuilder(" FROM TechnologyEntity a  "+
+        "inner join CollaboratorCampaignEntity c on a.collaboratorCampaign=c ");
         return sql;
-
-    }
+	}
 
     @Override
     public StringBuilder getFilters(List<Filter> filters) {
@@ -82,7 +82,7 @@ public class TechnologyPaginationService implements IPaginationCommons<Technolog
                 sql.append(" AND a.idTechnology = :idTechnology");
             }
             if (filtro.getField().equals("idCollaboratorCampaign")) {
-                sql.append(" AND a.idCollaboratorCampaign = :idCollaboratorCampaign");
+                sql.append(" AND c.idCollaboratorCampaign = :idCollaboratorCampaign");
             }
             if (filtro.getField().equals("idCatalog")) {
                 sql.append(" AND a.idCatalog = :idCatalog");
@@ -134,7 +134,7 @@ public class TechnologyPaginationService implements IPaginationCommons<Technolog
                     if (flagMore)
                         sql.append(", ");
 
-                    sql.append(" idTechnology " + sort.getSort());
+                    sql.append(" a.idTechnology " + sort.getSort());
                     flagMore = true;
                 }
 
@@ -142,7 +142,7 @@ public class TechnologyPaginationService implements IPaginationCommons<Technolog
                     if (flagMore)
                         sql.append(", ");
 
-                    sql.append(" idCollaboratorCampaign " + sort.getSort());
+                    sql.append(" c.idCollaboratorCampaign " + sort.getSort());
                     flagMore = true;
                 }
 
@@ -150,7 +150,7 @@ public class TechnologyPaginationService implements IPaginationCommons<Technolog
                     if (flagMore)
                         sql.append(", ");
 
-                    sql.append(" idCatalog " + sort.getSort());
+                    sql.append(" a.idCatalog " + sort.getSort());
                     flagMore = true;
                 }
 
@@ -158,7 +158,7 @@ public class TechnologyPaginationService implements IPaginationCommons<Technolog
                     if (flagMore)
                         sql.append(", ");
 
-                    sql.append(" yearExpert " + sort.getSort());
+                    sql.append(" a.yearExpert " + sort.getSort());
                     flagMore = true;
                 }
 
@@ -166,7 +166,7 @@ public class TechnologyPaginationService implements IPaginationCommons<Technolog
                     if (flagMore)
                         sql.append(", ");
 
-                    sql.append(" rank " + sort.getSort());
+                    sql.append(" a.rank " + sort.getSort());
                     flagMore = true;
                 }
             }

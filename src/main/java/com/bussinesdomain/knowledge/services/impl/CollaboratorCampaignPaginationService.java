@@ -60,15 +60,17 @@ public class CollaboratorCampaignPaginationService implements IPaginationCommons
     public StringBuilder getSelect() {
         StringBuilder sql = new StringBuilder(
                 "SELECT new com.bussinesdomain.knowledge.dto.CollaboratorCampaignResponseDTO" +
-                        "(a.idCollaboratorCampaign,a.idCommunity,a.idSubpractica,a.idParticipant) ");
+                        "(a.idCollaboratorCampaign,a.idCommunity,a.idSubpractica,r.idParticipant) ");
         return sql;
     }
 
+       
     @Override
-    public StringBuilder getFrom() {
-        StringBuilder sql = new StringBuilder(" FROM CollaboratorCampaignEntity a ");
+	public StringBuilder getFrom() {
+		StringBuilder sql = new StringBuilder(" FROM CollaboratorCampaignEntity a  "+
+        "inner join ParticipantEntity r on a.participant=r ");
         return sql;
-    }
+	}
 
     @Override
     public StringBuilder getFilters(List<Filter> filters) {
@@ -85,7 +87,7 @@ public class CollaboratorCampaignPaginationService implements IPaginationCommons
                 sql.append(" AND a.idSubpractica = :idSubpractica ");
             }
             if (filtro.getField().equals("idParticipant")) {
-                sql.append(" AND a.idParticipant = :idParticipant ");
+                sql.append(" AND r.idParticipant = :idParticipant ");
             }
         }
 
@@ -125,7 +127,7 @@ public class CollaboratorCampaignPaginationService implements IPaginationCommons
                     if (flagMore)
                         sql.append(", ");
 
-                    sql.append(" idCollaboratorCampaign " + sort.getSort());
+                    sql.append(" a.idCollaboratorCampaign " + sort.getSort());
                     flagMore = true;
                 }
 
@@ -133,7 +135,7 @@ public class CollaboratorCampaignPaginationService implements IPaginationCommons
                     if (flagMore)
                         sql.append(", ");
 
-                    sql.append(" idCommunity " + sort.getSort());
+                    sql.append(" a.idCommunity " + sort.getSort());
                     flagMore = true;
                 }
 
@@ -141,7 +143,7 @@ public class CollaboratorCampaignPaginationService implements IPaginationCommons
                     if (flagMore)
                         sql.append(", ");
 
-                    sql.append(" idSubpractica " + sort.getSort());
+                    sql.append(" a.idSubpractica " + sort.getSort());
                     flagMore = true;
                 }
 
@@ -149,7 +151,7 @@ public class CollaboratorCampaignPaginationService implements IPaginationCommons
                     if (flagMore)
                         sql.append(", ");
 
-                    sql.append(" idParticipant " + sort.getSort());
+                    sql.append(" r.idParticipant " + sort.getSort());
                     flagMore = true;
                 }
             }

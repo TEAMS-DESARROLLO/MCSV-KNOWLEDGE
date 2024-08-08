@@ -24,7 +24,5 @@ public class CollaboratorCampaignResponseDTO {
 
     private Long idSubpractica;
     
-    private LocalDateTime createdAt;
-    
     private Long idParticipant;
 }

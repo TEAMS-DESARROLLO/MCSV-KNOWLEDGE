@@ -46,8 +46,8 @@ public class CollaboratorCampaignEntity implements Serializable{
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name="created_at",nullable = true)
     private LocalDateTime createdAt;
-    
-    @ManyToOne(optional = false,fetch= FetchType.EAGER)
+      
+    @ManyToOne(optional = true, fetch= FetchType.EAGER)
     @JoinColumn(name="id_participant",referencedColumnName="id_participant")
     private ParticipantEntity participant;
 

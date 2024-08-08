@@ -60,7 +60,7 @@ public class CollaboratorCampaignPaginationService implements IPaginationCommons
     public StringBuilder getSelect() {
         StringBuilder sql = new StringBuilder(
                 "SELECT new com.bussinesdomain.knowledge.dto.CollaboratorCampaignResponseDTO" +
-                        "(a.idCollaboratorCampaign,a.idCommunity,a.idSubpractica,a.idParticipant.idParticipant) ");
+                        "(a.idCollaboratorCampaign,a.idCommunity,a.idSubpractica,a.idParticipant) ");
         return sql;
     }
 
@@ -81,6 +81,12 @@ public class CollaboratorCampaignPaginationService implements IPaginationCommons
             if (filtro.getField().equals("idCommunity")) {
                 sql.append(" AND a.idCommunity = :idCommunity ");
             }
+            if (filtro.getField().equals("idSubpractica")) {
+                sql.append(" AND a.idSubpractica = :idSubpractica ");
+            }
+            if (filtro.getField().equals("idParticipant")) {
+                sql.append(" AND a.idParticipant = :idParticipant ");
+            }
         }
 
         return sql;
@@ -93,8 +99,14 @@ public class CollaboratorCampaignPaginationService implements IPaginationCommons
             if (filtro.getField().equals("idCollaboratorCampaign")) {
                 query.setParameter("idCollaboratorCampaign", filtro.getValue());
             }
-            if (filtro.getField().equals("idCollaboratorCampaign")) {
+            if (filtro.getField().equals("idCommunity")) {
                 query.setParameter("idCommunity", filtro.getValue());
+            }
+            if (filtro.getField().equals("idSubpractica")) {
+                query.setParameter("idSubpractica", filtro.getValue());
+            }
+            if (filtro.getField().equals("idParticipant")) {
+                query.setParameter("idParticipant", filtro.getValue());
             }
         }
         return query;
@@ -122,6 +134,22 @@ public class CollaboratorCampaignPaginationService implements IPaginationCommons
                         sql.append(", ");
 
                     sql.append(" idCommunity " + sort.getSort());
+                    flagMore = true;
+                }
+
+                if (sort.getColName().equals("idSubpractica")) {
+                    if (flagMore)
+                        sql.append(", ");
+
+                    sql.append(" idSubpractica " + sort.getSort());
+                    flagMore = true;
+                }
+
+                if (sort.getColName().equals("idParticipant")) {
+                    if (flagMore)
+                        sql.append(", ");
+
+                    sql.append(" idParticipant " + sort.getSort());
                     flagMore = true;
                 }
             }

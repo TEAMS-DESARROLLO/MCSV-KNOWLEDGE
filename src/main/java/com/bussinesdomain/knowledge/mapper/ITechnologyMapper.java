@@ -14,13 +14,10 @@ import com.bussinesdomain.knowledge.models.TechnologyEntity;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface ITechnologyMapper {
 
-    @Mapping(target  = "idCollaboratorCampaign", ignore = true)
-    TechnologyRequestDTO toGetDTO(TechnologyEntity entity);
-
-    @Mapping(target = "idCollaboratorCampaign", ignore = true)
+    @Mapping(target  = "idCollaboratorCampaign", source = "collaboratorCampaign.idCollaboratorCampaign")
     TechnologyResponseDTO toGetResponseDTO(TechnologyEntity entity);
 
-    @Mapping(target = "collaboratorCampaign", ignore = true)
+    @Mapping(target  = "collaboratorCampaign.idCollaboratorCampaign", source = "idCollaboratorCampaign")
     @InheritInverseConfiguration
     TechnologyEntity toEntity(TechnologyRequestDTO dto);
 

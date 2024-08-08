@@ -60,7 +60,7 @@ public class TechnologyPaginationService implements IPaginationCommons<Technolog
     public StringBuilder getSelect() {
         StringBuilder sql = new StringBuilder(
                 "SELECT new com.bussinesdomain.knowledge.dto.TechnologyResponseDTO"+
-                        "(a.idTechnology,a.idCollaboratorCampaign.idCollaboratorCampaign,a.idCatalog,a.yearExpert," +
+                        "(a.idTechnology,a.idCollaboratorCampaign,a.idCatalog,a.yearExpert," +
                         "a.rank) ");
         return sql;
 
@@ -81,8 +81,17 @@ public class TechnologyPaginationService implements IPaginationCommons<Technolog
             if (filtro.getField().equals("idTechnology")) {
                 sql.append(" AND a.idTechnology = :idTechnology");
             }
+            if (filtro.getField().equals("idCollaboratorCampaign")) {
+                sql.append(" AND a.idCollaboratorCampaign = :idCollaboratorCampaign");
+            }
+            if (filtro.getField().equals("idCatalog")) {
+                sql.append(" AND a.idCatalog = :idCatalog");
+            }
             if (filtro.getField().equals("yearExpert")) {
-                sql.append(" AND a.yearExpert LIKE :yearExpert ");
+                sql.append(" AND a.yearExpert = :yearExpert");
+            }
+            if (filtro.getField().equals("rank")) {
+                sql.append(" AND a.rank = :rank");
             }
         }
 
@@ -96,8 +105,17 @@ public class TechnologyPaginationService implements IPaginationCommons<Technolog
             if (filtro.getField().equals("idTechnology")) {
                 query.setParameter("idTechnology", filtro.getValue());
             }
+            if (filtro.getField().equals("idCollaboratorCampaign")) {
+                query.setParameter("idCollaboratorCampaign", filtro.getValue());
+            }
+            if (filtro.getField().equals("idCatalog")) {
+                query.setParameter("idCatalog", filtro.getValue());
+            }
             if (filtro.getField().equals("yearExpert")) {
-                query.setParameter("yearExpert", "%" + filtro.getValue() + "%");
+                query.setParameter("yearExpert", filtro.getValue());
+            }
+            if (filtro.getField().equals("rank")) {
+                query.setParameter("rank", filtro.getValue());
             }
         }
         return query;
@@ -120,6 +138,22 @@ public class TechnologyPaginationService implements IPaginationCommons<Technolog
                     flagMore = true;
                 }
 
+                if (sort.getColName().equals("idCollaboratorCampaign")) {
+                    if (flagMore)
+                        sql.append(", ");
+
+                    sql.append(" idCollaboratorCampaign " + sort.getSort());
+                    flagMore = true;
+                }
+
+                if (sort.getColName().equals("idCatalog")) {
+                    if (flagMore)
+                        sql.append(", ");
+
+                    sql.append(" idCatalog " + sort.getSort());
+                    flagMore = true;
+                }
+
                 if (sort.getColName().equals("yearExpert")) {
                     if (flagMore)
                         sql.append(", ");
@@ -127,9 +161,16 @@ public class TechnologyPaginationService implements IPaginationCommons<Technolog
                     sql.append(" yearExpert " + sort.getSort());
                     flagMore = true;
                 }
+
+                if (sort.getColName().equals("rank")) {
+                    if (flagMore)
+                        sql.append(", ");
+
+                    sql.append(" rank " + sort.getSort());
+                    flagMore = true;
+                }
             }
         }
         return sql;
     }
-
 }

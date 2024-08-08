@@ -2,6 +2,7 @@ package com.bussinesdomain.knowledge.controllers;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -14,14 +15,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bussinesdomain.knowledge.commons.PaginationModel;
 import com.bussinesdomain.knowledge.dto.CollaboratorCampaignRequestDTO;
 import com.bussinesdomain.knowledge.dto.CollaboratorCampaignResponseDTO;
 import com.bussinesdomain.knowledge.mapper.ICollaboratorCampaignMapper;
 import com.bussinesdomain.knowledge.models.CollaboratorCampaignEntity;
 import com.bussinesdomain.knowledge.services.ICollaboratorCampaignService;
+import com.bussinesdomain.knowledge.services.impl.CollaboratorCampaignPaginationService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/collaborator_campaign")
@@ -29,6 +34,15 @@ public class CollaboratorCampaignController {
 
     private final ICollaboratorCampaignMapper mapper;
     private final ICollaboratorCampaignService service;
+
+	private final CollaboratorCampaignPaginationService paginationCommons;
+
+	@PostMapping("/pagination")
+	public ResponseEntity<?> paginator(@RequestBody PaginationModel pagination){
+		log.info("PAGINATION ..... " + pagination);
+		Page<CollaboratorCampaignResponseDTO> lst = paginationCommons.pagination(pagination);
+		return new ResponseEntity<>(lst,HttpStatus.OK);
+	}
 
     @GetMapping("/all")
 	public ResponseEntity<List<CollaboratorCampaignResponseDTO>> findAll() {

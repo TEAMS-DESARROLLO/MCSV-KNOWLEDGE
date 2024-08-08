@@ -13,10 +13,14 @@ import com.bussinesdomain.knowledge.models.ParticipantEntity;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface IParticipantMapper {
 
+    @Mapping(target="idCampaign",source = "campaign.idCampaign")
+    @Mapping(target="campaignDescription",source = "campaign.description")
 	ParticipantResponseDTO toGetDTO(ParticipantEntity entity);
 
     @Mapping(target = "createdAt",ignore = true)
     @Mapping(target = "updatedAt",ignore = true)
+    
+    @Mapping(target="campaign.idCampaign",source = "idCampaign")
     @InheritInverseConfiguration
     ParticipantEntity toEntity(ParticipantRequestDTO dto);
 

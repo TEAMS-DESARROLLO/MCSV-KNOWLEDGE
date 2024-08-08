@@ -64,13 +64,13 @@ public class ParticipantPaginationServiceImpl implements IPaginationCommons<Part
 
 	@Override
 	public StringBuilder getSelect() {
-		StringBuilder sql = new StringBuilder("SELECT new com.bussinesdomain.maestros.dto.ParticipantResponseDTO("+
+		StringBuilder sql = new StringBuilder("SELECT new com.bussinesdomain.knowledge.dto.ParticipantResponseDTO("+
         "r.idParticipant,"+
         "r.email,"+
         "r.code,"+
         "r.responseStatus,"+
-        "r.idCampaign,"+
-        "c.campaignDescription,"+
+        "c.idCampaign,"+
+        "c.description,"+
         "r.idCollaborator,"+
         "r.namesCollaborator,"+
         "r.lastnameCollaborator,"+
@@ -89,7 +89,7 @@ public class ParticipantPaginationServiceImpl implements IPaginationCommons<Part
 	@Override
 	public StringBuilder getFrom() {
 		StringBuilder sql = new StringBuilder(" FROM ParticipantEntity r  "+
-        "inner join CampaignEntity c r.campaign=c ");
+        "inner join CampaignEntity c on r.campaign=c ");
         return sql;
 	}
 
@@ -111,7 +111,7 @@ public class ParticipantPaginationServiceImpl implements IPaginationCommons<Part
                 sql.append(" AND r.responseStatus LIKE :responseStatus");
             }
             if(filtro.getField().equals("idCampaign")){
-                sql.append(" AND r.idCampaign = :idCampaign");
+                sql.append(" AND c.idCampaign = :idCampaign");
             }
             if(filtro.getField().equals("campaignDescription")){
                 sql.append(" AND c.description LIKE :campaignDescription ");
@@ -255,7 +255,7 @@ public class ParticipantPaginationServiceImpl implements IPaginationCommons<Part
                     if(flagMore)
                         sql.append(", ");
 
-                    sql.append( " r.idCampaign " + sort.getSort() );
+                    sql.append( " c.idCampaign " + sort.getSort() );
                     flagMore = true;
                 }
 

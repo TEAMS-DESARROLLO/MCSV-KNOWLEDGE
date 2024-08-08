@@ -1,5 +1,6 @@
 package com.bussinesdomain.knowledge.dto;
 
+import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -27,6 +28,25 @@ public class ParticipantResponseDTO {
     private String campaignDescription;
     
     private Long idCollaborator;
-    private String collaboratorNames;
-    private String collaboratorLastNames;
+
+    
+    private String namesCollaborator;
+    private String lastnameCollaborator;
+
+
+    
+    private Long idLeader;
+    private String namesLeader;
+
+    
+    private Long idRegion;
+
+    private String descriptionRegion;
+
+    private Long idCommunity;
+
+    private String descriptionCommunity;
+    private Long idFunctionalLeader;
+
+    private String namesFunctionalLeader;
 }

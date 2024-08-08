@@ -60,6 +60,37 @@ public class ParticipantEntity implements Serializable {
     
     @Column(name="id_collaborator")
     private Long idCollaborator;
+    @Column(name="names_collaborator")
+    private String namesCollaborator;
+    @Column(name="lastname_collaborator")
+    private String lastnameCollaborator;
+
+    
+    @Column(name="id_leader")
+    private Long idLeader;
+    
+    @Column(name="names_leader")
+    private String namesLeader;
+
+    @Column(name="id_region")
+    private Long idRegion;
+
+    @Column(name="description_region")
+    private String descriptionRegion;
+
+    @Column(name="id_community")
+    private Long idCommunity;
+
+    @Column(name="description_community")
+    private String descriptionCommunity;
+
+    @Column(name="id_functional_leader")
+    private Long idFunctionalLeader;
+
+    @Column(name="names_functional_leader")
+    private String namesFunctionalLeader;
+
+
 
     @PrePersist
     public void prePersisten(){

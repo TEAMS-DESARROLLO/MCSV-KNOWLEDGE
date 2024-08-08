@@ -31,5 +31,4 @@ public class CampaignResponseDTO {
 	
     
     private Long idCommunity;
-    private String communityDescription;
 }

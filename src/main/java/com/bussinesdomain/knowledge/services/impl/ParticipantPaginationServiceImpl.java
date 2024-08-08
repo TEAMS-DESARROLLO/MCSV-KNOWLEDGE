@@ -50,8 +50,7 @@ public class ParticipantPaginationServiceImpl implements IPaginationCommons<Part
 
 			@SuppressWarnings("unchecked")
 			List<ParticipantResponseDTO> lista = querySelect.getResultList();
-            assignCollaboratorInList(lista);
-			PageRequest pageable = PageRequest.of(pagination.getPageNumber(), pagination.getRowsPerPage());
+            PageRequest pageable = PageRequest.of(pagination.getPageNumber(), pagination.getRowsPerPage());
 
 			Page<ParticipantResponseDTO> page = new PageImpl<ParticipantResponseDTO>(lista, pageable, total);
 
@@ -61,19 +60,7 @@ public class ParticipantPaginationServiceImpl implements IPaginationCommons<Part
 		}
 	}
 
-    private void assignCollaboratorInList(List<ParticipantResponseDTO> lista){
-		List<Long> idCollaboratorsLst = lista.stream().map(x -> x.getIdCollaborator()).distinct().collect(Collectors.toList());
-		List<CollaboratorResponseDTO> collaborators = this.masterClient.findCollaboratorsByListId(ConfigToken.tokenBack, idCollaboratorsLst).getBody();
-		lista.forEach(x ->
-		{
-			@SuppressWarnings("null")
-			Optional<CollaboratorResponseDTO> optCollaborator = collaborators.stream().filter(y->y.getIdCollaborator().equals(x.getIdCollaborator())).findAny();
-			if(optCollaborator.isPresent()){
-				x.setCollaboratorNames(optCollaborator.get().getNames());
-				x.setCollaboratorLastNames(optCollaborator.get().getLastName());
-			}
-		});
-	}
+
 
 	@Override
 	public StringBuilder getSelect() {
@@ -85,8 +72,16 @@ public class ParticipantPaginationServiceImpl implements IPaginationCommons<Part
         "r.idCampaign,"+
         "c.campaignDescription,"+
         "r.idCollaborator,"+
-        "\"\","+
-        "\"\","+
+        "r.namesCollaborator,"+
+        "r.lastnameCollaborator,"+
+        "r.idLeader,"+
+        "r.namesLeader,"+
+        "r.idRegion,"+
+        "r.descriptionRegion,"+
+        "r.idCommunity,"+
+        "r.descriptionCommunity,"+
+        "r.idFunctionalLeader,"+
+        "r.namesFunctionalLeader"+
         ") ");
         return sql;
 	}
@@ -124,6 +119,36 @@ public class ParticipantPaginationServiceImpl implements IPaginationCommons<Part
             if(filtro.getField().equals("idCollaborator")){
                 sql.append(" AND r.idCollaborator = :idCollaborator");
             }
+            if(filtro.getField().equals("namesCollaborator")){
+                sql.append(" AND r.namesCollaborator LIKE :namesCollaborator ");
+            }
+            if(filtro.getField().equals("lastnameCollaborator")){
+                sql.append(" AND r.lastnameCollaborator LIKE :lastnameCollaborator ");
+            }
+            if(filtro.getField().equals("idLeader")){
+                sql.append(" AND r.idLeader = :idLeader");
+            }
+            if(filtro.getField().equals("namesLeader")){
+                sql.append(" AND r.namesLeader LIKE :namesLeader ");
+            }
+            if(filtro.getField().equals("idRegion")){
+                sql.append(" AND r.idRegion = :idRegion");
+            }
+            if(filtro.getField().equals("descriptionRegion")){
+                sql.append(" AND r.descriptionRegion LIKE :descriptionRegion ");
+            }
+            if(filtro.getField().equals("idCommunity")){
+                sql.append(" AND r.idCommunity = :idCommunity");
+            }
+            if(filtro.getField().equals("descriptionCommunity")){
+                sql.append(" AND r.descriptionCommunity LIKE :descriptionCommunity ");
+            }
+            if(filtro.getField().equals("idFunctionalLeader")){
+                sql.append(" AND r.idFunctionalLeader = :idFunctionalLeader");
+            }
+            if(filtro.getField().equals("namesFunctionalLeader")){
+                sql.append(" AND r.namesFunctionalLeader LIKE :namesFunctionalLeader ");
+            }
         }
 
         return sql;
@@ -153,6 +178,37 @@ public class ParticipantPaginationServiceImpl implements IPaginationCommons<Part
             if(filtro.getField().equals("idCollaborator")){
                 query.setParameter("idCollaborator",filtro.getValue() );
             }
+            if(filtro.getField().equals("namesCollaborator")){
+                query.setParameter("namesCollaborator","%"+filtro.getValue()+"%");
+            }
+            if(filtro.getField().equals("lastnameCollaborator")){
+                query.setParameter("lastnameCollaborator","%"+filtro.getValue()+"%");
+            }
+            if(filtro.getField().equals("idLeader")){
+                query.setParameter("idLeader",filtro.getValue() );
+            }
+            if(filtro.getField().equals("namesLeader")){
+                query.setParameter("namesLeader","%"+filtro.getValue()+"%");
+            }
+            if(filtro.getField().equals("idRegion")){
+                query.setParameter("idRegion",filtro.getValue() );
+            }
+            if(filtro.getField().equals("descriptionRegion")){
+                query.setParameter("descriptionRegion","%"+filtro.getValue()+"%");
+            }
+            if(filtro.getField().equals("idCommunity")){
+                query.setParameter("idCommunity",filtro.getValue() );
+            }
+            if(filtro.getField().equals("descriptionCommunity")){
+                query.setParameter("descriptionCommunity","%"+filtro.getValue()+"%");
+            }
+            if(filtro.getField().equals("idFunctionalLeader")){
+                query.setParameter("idFunctionalLeader",filtro.getValue() );
+            }
+            if(filtro.getField().equals("namesFunctionalLeader")){
+                query.setParameter("namesFunctionalLeader","%"+filtro.getValue()+"%");
+            }
+            
         }
         return query;
 	}
@@ -215,6 +271,76 @@ public class ParticipantPaginationServiceImpl implements IPaginationCommons<Part
                         sql.append(", ");
 
                     sql.append( " r.idCollaborator " + sort.getSort() );
+                    flagMore = true;
+                }
+                if(sort.getColName().equals("namesCollaborator")){
+                    if(flagMore)
+                        sql.append(", ");
+
+                    sql.append( " r.namesCollaborator " + sort.getSort() );
+                    flagMore = true;
+                }
+                if(sort.getColName().equals("lastnameCollaborator")){
+                    if(flagMore)
+                        sql.append(", ");
+
+                    sql.append( " r.lastnameCollaborator " + sort.getSort() );
+                    flagMore = true;
+                }
+                if(sort.getColName().equals("idLeader")){
+                    if(flagMore)
+                        sql.append(", ");
+
+                    sql.append( " r.idLeader " + sort.getSort() );
+                    flagMore = true;
+                }
+                if(sort.getColName().equals("namesLeader")){
+                    if(flagMore)
+                        sql.append(", ");
+
+                    sql.append( " r.namesLeader " + sort.getSort() );
+                    flagMore = true;
+                }
+                if(sort.getColName().equals("idRegion")){
+                    if(flagMore)
+                        sql.append(", ");
+
+                    sql.append( " r.idRegion " + sort.getSort() );
+                    flagMore = true;
+                }
+                if(sort.getColName().equals("descriptionRegion")){
+                    if(flagMore)
+                        sql.append(", ");
+
+                    sql.append( " r.descriptionRegion " + sort.getSort() );
+                    flagMore = true;
+                }
+                if(sort.getColName().equals("idCommunity")){
+                    if(flagMore)
+                        sql.append(", ");
+
+                    sql.append( " r.idCommunity " + sort.getSort() );
+                    flagMore = true;
+                }
+                if(sort.getColName().equals("descriptionCommunity")){
+                    if(flagMore)
+                        sql.append(", ");
+
+                    sql.append( " r.descriptionCommunity " + sort.getSort() );
+                    flagMore = true;
+                }
+                if(sort.getColName().equals("idFunctionalLeader")){
+                    if(flagMore)
+                        sql.append(", ");
+
+                    sql.append( " r.idFunctionalLeader " + sort.getSort() );
+                    flagMore = true;
+                }
+                if(sort.getColName().equals("namesFunctionalLeader")){
+                    if(flagMore)
+                        sql.append(", ");
+
+                    sql.append( " r.namesFunctionalLeader " + sort.getSort() );
                     flagMore = true;
                 }
                 

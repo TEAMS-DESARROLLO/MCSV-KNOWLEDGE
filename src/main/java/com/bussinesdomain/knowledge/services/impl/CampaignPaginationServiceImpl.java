@@ -53,8 +53,7 @@ public class CampaignPaginationServiceImpl implements IPaginationCommons<Campaig
 
 			@SuppressWarnings("unchecked")
 			List<CampaignResponseDTO> lista = querySelect.getResultList();
-            assignCommunityInList(lista);
-			PageRequest pageable = PageRequest.of(pagination.getPageNumber(), pagination.getRowsPerPage());
+            PageRequest pageable = PageRequest.of(pagination.getPageNumber(), pagination.getRowsPerPage());
 
 			Page<CampaignResponseDTO> page = new PageImpl<CampaignResponseDTO>(lista, pageable, total);
 
@@ -64,18 +63,6 @@ public class CampaignPaginationServiceImpl implements IPaginationCommons<Campaig
 		}
 	}
 
-    private void assignCommunityInList(List<CampaignResponseDTO> lista){
-		List<Long> idCommunitiesLst = lista.stream().map(x -> x.getIdCommunity()).distinct().collect(Collectors.toList());
-		List<CommunityResponseDTO> communities = this.masterClient.findCommunitiesByListId(ConfigToken.tokenBack, idCommunitiesLst).getBody();
-		lista.forEach(x ->
-		{
-			@SuppressWarnings("null")
-			Optional<CommunityResponseDTO> optCollaborator = communities.stream().filter(y->y.getIdCommunity().equals(x.getIdCommunity())).findAny();
-			if(optCollaborator.isPresent()){
-				x.setCommunityDescription(optCollaborator.get().getDescription());
-			}
-		});
-	}
 
 	@Override
 	public StringBuilder getSelect() {
@@ -85,8 +72,8 @@ public class CampaignPaginationServiceImpl implements IPaginationCommons<Campaig
         "r.description,"+
         "r.dateStart,"+
         "r.dateEnd,"+
-        "r.idCommunity,"+
-        "\"\") ");
+        "r.idCommunity"+
+        ") ");
         return sql;
 	}
 

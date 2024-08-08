@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import com.bussinesdomain.knowledge.constants.ValidationMessage;
 
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -41,4 +42,18 @@ public class ParticipantRequestDTO {
     
     @NotNull(message = ValidationMessage.CAN_T_BE_NULL)
     private Long idCollaborator;
+
+    
+    @NotNull(message = ValidationMessage.CAN_T_BE_NULL)
+    private Long idLeader;
+    
+    
+    @NotNull(message = ValidationMessage.CAN_T_BE_NULL)
+    private Long idRegion;
+
+    @NotNull(message = ValidationMessage.CAN_T_BE_NULL)
+    private Long idCommunity;
+    
+    @NotNull(message = ValidationMessage.CAN_T_BE_NULL)
+    private Long idFunctionalLeader;
 }
